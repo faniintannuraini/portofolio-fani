@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Fani Intan Nuraini | Personal Portfolio</title>
-        <meta name="description" content="Personal Portfolio of Fani Intan Nuraini - Web Developer & Designer">
+        <title>{{ $profile->name }} | Personal Portfolio</title>
+        <meta name="description" content="Personal Portfolio of {{ $profile->name }} - {{ $profile->title }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,7 +46,7 @@
                 <div class="flex items-center justify-between h-16">
                     <div class="flex-shrink-0">
                         <a href="#" class="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent hero-title">
-                            fani.intan
+                            {{ strtolower(str_replace(' ', '.', $profile->name)) }}
                         </a>
                     </div>
                     <div class="hidden md:block">
@@ -85,7 +85,7 @@
         <!-- Hero Section -->
         <section id="home" class="relative pt-20 pb-24 md:pt-32 md:pb-40 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
             <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-semibold mb-6 animate-fade-in">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-semibold mb-6">
                 <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
                 <span>Open for freelance & collaborations</span>
             </div>
@@ -98,7 +98,7 @@
 
             <!-- Subtitle -->
             <p class="text-slate-400 text-lg sm:text-xl max-w-2xl mb-10 leading-relaxed font-light">
-                Hi, I'm <span class="text-white font-medium">Fani Intan Nuraini</span>. A passionate Web Developer specializing in building modern, responsive, and high-performing web applications.
+                Hi, I'm <span class="text-white font-medium">{{ $profile->name }}</span>. {{ $profile->sub_title }}
             </p>
 
             <!-- Action Buttons -->
@@ -121,24 +121,20 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div>
                         <div class="h-80 w-full rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-slate-850 flex items-center justify-center relative overflow-hidden group">
-                            <!-- Geometric design placeholder for profile image -->
                             <div class="absolute inset-0 bg-slate-950/40 backdrop-blur-sm group-hover:scale-105 transition-transform duration-500"></div>
                             <div class="z-10 text-center">
                                 <div class="w-24 h-24 rounded-full bg-slate-900 border-2 border-indigo-400 mx-auto mb-4 flex items-center justify-center text-4xl shadow-lg">
                                     👩‍💻
                                 </div>
-                                <h3 class="text-white font-semibold text-lg hero-title">Fani Intan Nuraini</h3>
-                                <p class="text-slate-400 text-sm">Fullstack Web Developer</p>
+                                <h3 class="text-white font-semibold text-lg hero-title">{{ $profile->name }}</h3>
+                                <p class="text-slate-400 text-sm">{{ $profile->title }}</p>
                             </div>
                         </div>
                     </div>
                     <div>
                         <h2 class="text-3xl font-bold text-white mb-6 hero-title">About Me</h2>
-                        <p class="text-slate-300 mb-4 leading-relaxed font-light">
-                            I am a dedicated web developer focused on creating clean, intuitive user interfaces and robust back-end systems. With an eye for design aesthetics and strong foundations in web standards, I build tools that solve real problems.
-                        </p>
                         <p class="text-slate-300 mb-6 leading-relaxed font-light">
-                            My journey in tech drives me to continuously learn, explore modern frameworks, and implement performance-optimized solutions for digital transformation.
+                            {{ $profile->about_text }}
                         </p>
                         <div class="flex gap-4">
                             <div class="border-l-2 border-indigo-500 pl-4">
@@ -166,38 +162,28 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Skill Card 1 -->
-                    <div class="p-6 rounded-xl bg-slate-900/30 border border-slate-900 hover:border-indigo-500/30 hover:bg-slate-900/50 transition-all duration-300 group">
-                        <div class="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            🎨
-                        </div>
-                        <h3 class="text-lg font-semibold text-white mb-2">Frontend Development</h3>
-                        <p class="text-slate-400 text-sm font-light">
-                            Crafting pixel-perfect layouts using HTML5, CSS3, Tailwind CSS, Javascript, and frameworks like React or Vue.
-                        </p>
-                    </div>
+                    @php
+                        $colorMap = [
+                            'Frontend' => ['border' => 'hover:border-indigo-500/30', 'bg' => 'bg-indigo-500/10', 'text' => 'text-indigo-400'],
+                            'Backend' => ['border' => 'hover:border-purple-500/30', 'bg' => 'bg-purple-500/10', 'text' => 'text-purple-400'],
+                            'DevOps' => ['border' => 'hover:border-cyan-500/30', 'bg' => 'bg-cyan-500/10', 'text' => 'text-cyan-400']
+                        ];
+                    @endphp
 
-                    <!-- Skill Card 2 -->
-                    <div class="p-6 rounded-xl bg-slate-900/30 border border-slate-900 hover:border-purple-500/30 hover:bg-slate-900/50 transition-all duration-300 group">
-                        <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            ⚙️
+                    @foreach($skills as $skill)
+                        @php
+                            $colors = $colorMap[$skill->category] ?? ['border' => 'hover:border-slate-500/30', 'bg' => 'bg-slate-500/10', 'text' => 'text-slate-400'];
+                        @endphp
+                        <div class="p-6 rounded-xl bg-slate-900/30 border border-slate-900 {{ $colors['border'] }} hover:bg-slate-900/50 transition-all duration-300 group">
+                            <div class="w-10 h-10 rounded-lg {{ $colors['bg'] }} {{ $colors['text'] }} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                {{ $skill->icon }}
+                            </div>
+                            <h3 class="text-lg font-semibold text-white mb-2">{{ $skill->name }}</h3>
+                            <p class="text-slate-400 text-sm font-light">
+                                {{ $skill->description }}
+                            </p>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-2">Backend Development</h3>
-                        <p class="text-slate-400 text-sm font-light">
-                            Building reliable RESTful APIs and server architectures using PHP, Laravel, Node.js, and relational databases.
-                        </p>
-                    </div>
-
-                    <!-- Skill Card 3 -->
-                    <div class="p-6 rounded-xl bg-slate-900/30 border border-slate-900 hover:border-cyan-500/30 hover:bg-slate-900/50 transition-all duration-300 group">
-                        <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            🔧
-                        </div>
-                        <h3 class="text-lg font-semibold text-white mb-2">DevOps & Tooling</h3>
-                        <p class="text-slate-400 text-sm font-light">
-                            Managing code versioning with Git/GitHub, configuring build pipelines, and working with cloud platforms.
-                        </p>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -223,51 +209,32 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Project Card 1 -->
-                    <div class="group rounded-xl overflow-hidden bg-slate-900/30 border border-slate-900 hover:border-slate-800 transition-all duration-300">
-                        <div class="h-48 bg-gradient-to-r from-indigo-950 to-slate-900 flex items-center justify-center relative overflow-hidden">
-                            <span class="text-4xl group-hover:scale-110 transition-transform duration-500">🌐</span>
-                        </div>
-                        <div class="p-6">
-                            <div class="flex gap-2 mb-3">
-                                <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 text-xs font-semibold">Laravel</span>
-                                <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 text-xs font-semibold">Tailwind CSS</span>
+                    @foreach($projects as $project)
+                        <div class="group rounded-xl overflow-hidden bg-slate-900/30 border border-slate-900 hover:border-slate-800 transition-all duration-300">
+                            <div class="h-48 bg-gradient-to-r {{ $loop->first ? 'from-indigo-950' : 'from-purple-950' }} to-slate-900 flex items-center justify-center relative overflow-hidden">
+                                <span class="text-4xl group-hover:scale-110 transition-transform duration-500">{{ $project->image_url }}</span>
                             </div>
-                            <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-indigo-300 transition-colors">E-Commerce Application</h3>
-                            <p class="text-slate-450 text-sm font-light mb-4">
-                                A feature-rich online shopping platform with custom dashboard, shopping cart, and transaction logs.
-                            </p>
-                            <a href="#" class="inline-flex items-center text-sm font-medium text-slate-300 hover:text-white">
-                                View Case Study
-                                <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Project Card 2 -->
-                    <div class="group rounded-xl overflow-hidden bg-slate-900/30 border border-slate-900 hover:border-slate-800 transition-all duration-300">
-                        <div class="h-48 bg-gradient-to-r from-purple-950 to-slate-900 flex items-center justify-center relative overflow-hidden">
-                            <span class="text-4xl group-hover:scale-110 transition-transform duration-500">📊</span>
-                        </div>
-                        <div class="p-6">
-                            <div class="flex gap-2 mb-3">
-                                <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 text-xs font-semibold">VueJS</span>
-                                <span class="px-2 py-0.5 rounded bg-slate-500/10 text-slate-300 text-xs font-semibold">API Integration</span>
+                            <div class="p-6">
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    @if(is_array($project->tech_stack))
+                                        @foreach($project->tech_stack as $tech)
+                                            <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 text-xs font-semibold">{{ $tech }}</span>
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-indigo-300 transition-colors">{{ $project->title }}</h3>
+                                <p class="text-slate-400 text-sm font-light mb-4">
+                                    {{ $project->description }}
+                                </p>
+                                <a href="{{ $project->project_url }}" class="inline-flex items-center text-sm font-medium text-slate-300 hover:text-white">
+                                    View Case Study
+                                    <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                    </svg>
+                                </a>
                             </div>
-                            <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">Analytics Dashboard</h3>
-                            <p class="text-slate-450 text-sm font-light mb-4">
-                                Interactive data analytics tool illustrating user demographics, behavior charts, and export actions.
-                            </p>
-                            <a href="#" class="inline-flex items-center text-sm font-medium text-slate-300 hover:text-white">
-                                View Case Study
-                                <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                </svg>
-                            </a>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -283,9 +250,9 @@
                 <div class="inline-flex flex-col sm:flex-row items-center gap-4 bg-slate-900/40 p-6 rounded-2xl border border-slate-900 w-full max-w-xl mx-auto justify-between">
                     <div class="text-left">
                         <p class="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Direct Email</p>
-                        <p class="text-white font-medium">faniintannuraini@gmail.com</p>
+                        <p class="text-white font-medium">{{ $profile->email }}</p>
                     </div>
-                    <a href="mailto:faniintannuraini@gmail.com" class="w-full sm:w-auto px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg text-sm font-semibold transition-colors duration-300">
+                    <a href="mailto:{{ $profile->email }}" class="w-full sm:w-auto px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg text-sm font-semibold transition-colors duration-300">
                         Email Me
                     </a>
                 </div>
@@ -296,12 +263,18 @@
         <footer class="border-t border-slate-900 bg-slate-950 py-12">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="text-sm text-slate-500">
-                    &copy; {{ date('Y') }} Fani Intan Nuraini. All rights reserved.
+                    &copy; {{ date('Y') }} {{ $profile->name }}. All rights reserved.
                 </div>
                 <div class="flex gap-6 text-slate-500 text-sm">
-                    <a href="https://github.com/faniintannuraini" target="_blank" class="hover:text-slate-350 transition-colors">GitHub</a>
-                    <a href="#" class="hover:text-slate-350 transition-colors">LinkedIn</a>
-                    <a href="#" class="hover:text-slate-350 transition-colors">Instagram</a>
+                    @if($profile->github_url)
+                        <a href="{{ $profile->github_url }}" target="_blank" class="hover:text-slate-300 transition-colors">GitHub</a>
+                    @endif
+                    @if($profile->linkedin_url)
+                        <a href="{{ $profile->linkedin_url }}" target="_blank" class="hover:text-slate-300 transition-colors">LinkedIn</a>
+                    @endif
+                    @if($profile->instagram_url)
+                        <a href="{{ $profile->instagram_url }}" target="_blank" class="hover:text-slate-300 transition-colors">Instagram</a>
+                    @endif
                 </div>
             </div>
         </footer>
