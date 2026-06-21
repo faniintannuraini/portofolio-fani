@@ -30,9 +30,19 @@ class AdminController extends Controller
             'github_url' => 'nullable|url|max:255',
             'linkedin_url' => 'nullable|url|max:255',
             'instagram_url' => 'nullable|url|max:255',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         $profile = Profile::first();
+
+        if ($request->hasFile('profile_photo')) {
+            if ($profile && $profile->profile_photo) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($profile->profile_photo);
+            }
+            $path = $request->file('profile_photo')->store('profile_photos', 'public');
+            $data['profile_photo'] = $path;
+        }
+
         if ($profile) {
             $profile->update($data);
         } else {

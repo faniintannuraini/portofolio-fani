@@ -15,5 +15,6 @@ class Profile extends Model
         'github_url',
         'linkedin_url',
         'instagram_url',
+        'profile_photo',
     ];
 }
